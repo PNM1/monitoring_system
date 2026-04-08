@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление торговым залом</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="authWindow" class="auth-container">
+        <h2>Авторизация</h2>
+        <div class="input-group">
+            <label>Логин</label>
+            <input type="text" id="username" placeholder="Введите логин">
+        </div>
+        <div class="input-group">
+            <label>Пароль</label>
+            <input type="password" id="password" placeholder="Введите пароль">
+        </div>
+        <button class="btn" onclick="login()">Войти</button>
+        <div id="authError" class="error-message"></div>
+    </div>
+
+    <div id="tableWindow" class="table-container">
+        <button class="btn logout-btn" onclick="logout()">Выйти</button>
+        <h2>Товары в торговом зале</h2>
+        <div id="productsTable">
+            <div class="loading">Загрузка...</div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>Редактирование местоположения</h3>
+            <input type="number" id="deptInput" placeholder="Отдел" min="1">
+            <input type="number" id="rowInput" placeholder="Ряд" min="1">
+            <input type="number" id="shelfInput" placeholder="Полка" min="1">
+            <div class="modal-buttons">
+                <button class="save-btn" onclick="saveLocation()">Сохранить</button>
+                <button class="cancel-btn" onclick="closeModal()">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src=".\script.js"></script>
+</body>
+</html>
