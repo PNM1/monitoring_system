@@ -48,14 +48,57 @@ class DBHandler
 
     public function authenticateUser($username, $password)
     {
-        $stmt = $this->pdo->prepare("SELECT password_hash FROM users WHERE username = ?");
+        $stmt = $this->pdo->prepare("SELECT id, username, password_hash, is_admin FROM users WHERE username = ?");
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && true) {
-            /*password_verify($password, $user['password_hash'])*/
-            return true;
+        if ($user && password_verify($password, $user['password_hash'])) {
+            return [
+                'id' => $user['id'],
+                'username' => $user['username'],
+                'is_admin' => (bool) $user['is_admin']
+            ];
         }
         return false;
+    }
+
+    public function getAllUsers()
+    {
+        $stmt = $this->pdo->query("SELECT id, username, is_admin FROM users ORDER BY id");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByUsername($username)
+    {
+        $stmt = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function createUser($username, $password, $isAdmin = false)
+    {
+        if ($this->getUserByUsername($username)) {
+            return false;
+        }
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->pdo->prepare("INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, ?)");
+        return $stmt->execute([$username, $passwordHash, $isAdmin ? 1 : 0]);
+    }
+
+    public function deleteUser($id)
+    {
+        $stmt = $this->pdo->prepare("SELECT username FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($user && $user['username'] === 'admin') {
+            return false;
+        }
+        $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function getAdminCount()
+    {
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 1");
+        return $stmt->fetchColumn();
     }
 }
