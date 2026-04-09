@@ -22,9 +22,20 @@ class Security
         if ($result) {
             session_start();
             $_SESSION['user'] = $username;
-            return ['success' => true, 'message' => 'Аутентификация прошла успешно'];
+            $_SESSION['is_admin'] = $result['is_admin'];
+            return [
+                'success' => true,
+                'message' => 'Аутентификация прошла успешно',
+                'is_admin' => $result['is_admin']
+            ];
         }
 
         return ['success' => false, 'message' => 'Неправильный логин или пароль'];
+    }
+
+    public function isAdmin()
+    {
+        session_start();
+        return isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     }
 }
