@@ -2,8 +2,6 @@
 
 require_once 'security.php';
 
-session_start();
-
 $security = new Security();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

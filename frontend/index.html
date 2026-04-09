@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление торговым залом</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="authWindow" class="auth-container">
         <h2>Авторизация</h2>
@@ -23,6 +25,8 @@
 
     <div id="tableWindow" class="table-container">
         <button class="btn logout-btn" onclick="logout()">Выйти</button>
+        <button id="adminBtn" class="btn admin-btn" onclick="openAdminPanel()"
+            style="display:none;">Админ-панель</button>
         <h2>Товары в торговом зале</h2>
         <div id="productsTable">
             <div class="loading">Загрузка...</div>
@@ -42,6 +46,31 @@
         </div>
     </div>
 
+    <div id="adminModal" class="modal">
+        <div class="modal-content admin-modal">
+            <h3>Администрирование пользователей</h3>
+            <div class="admin-section">
+                <h4>Создать нового пользователя</h4>
+                <div class="admin-form">
+                    <input type="text" id="newUsername" placeholder="Логин">
+                    <input type="password" id="newPassword" placeholder="Пароль">
+                    <button class="save-btn" onclick="createUser()">Создать</button>
+                </div>
+                <div id="createUserMsg" class="admin-message"></div>
+            </div>
+            <div class="admin-section">
+                <h4>Список пользователей</h4>
+                <div id="usersList" class="users-list">
+                    <div class="loading">Загрузка...</div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeAdminPanel()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
     <script src=".\script.js"></script>
 </body>
+
 </html>
