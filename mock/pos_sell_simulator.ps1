@@ -1,7 +1,10 @@
 param(
     [Parameter(Mandatory=$false)]
     [string]$ProductName,
-    
+    [Parameter(Mandatory=$true)]
+    [string]$Color,
+    [Parameter(Mandatory=$true)]
+    [string]$Size,    
     [Parameter(Mandatory=$false)]
     [int]$Quantity = 1
 )
@@ -18,6 +21,8 @@ if ($Quantity -le 0) {
 
 $body = @{
     product_name = $ProductName
+    color        = $Color
+    size         = $Size
     quantity     = $Quantity
 }
 

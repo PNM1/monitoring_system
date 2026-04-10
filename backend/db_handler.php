@@ -58,4 +58,35 @@ class DBHandler
         }
         return false;
     }
+
+    public function decreaseProductQuantity($id, $requestedQty)
+    {
+        $stmt = $this->pdo->prepare("SELECT quantity FROM products WHERE id = ?");
+        $stmt->execute([$id]);
+        $current = $stmt->fetchColumn();
+
+        if ($current === false) {
+            return ['success' => false, 'message' => 'Товар не найден'];
+        }
+        if ($current < $requestedQty) {
+            return ['success' => false, 'message' =>
+            "Недостаточно товара в торговом зале (доступно: $current, запрошено: $requestedQty)"];
+        }
+
+        $newQty = $current - $requestedQty;
+        $update = $this->pdo->prepare("UPDATE products SET quantity = ? WHERE id = ?");
+        $update->execute([$newQty, $id]);
+        return [
+            'success' => true,
+            'message' => 'Количество товара в торговом зале уменьшено',
+            'new_quantity' => $newQty
+        ];
+    }
+
+    public function getProductByNameColorSize($name, $color, $size)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE name = ? AND color = ? AND size = ?");
+        $stmt->execute([$name, $color, $size]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
