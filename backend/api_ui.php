@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once 'query_module.php';
 require_once 'product_handler.php';
 
