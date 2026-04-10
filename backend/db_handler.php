@@ -52,8 +52,7 @@ class DBHandler
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && true) {
-            /*password_verify($password, $user['password_hash'])*/
+        if ($user && password_verify($password, $user['password_hash'])) {
             return true;
         }
         return false;
