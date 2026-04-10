@@ -73,5 +73,3 @@ switch ($method) {
         echo json_encode(['error' => 'Неразрешенный метод запроса']);
         break;
 }
-
-session_destroy();
