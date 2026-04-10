@@ -27,14 +27,12 @@ async function login() {
             document.getElementById('authWindow').style.display = 'none';
             document.getElementById('tableWindow').style.display = 'block';
             
-            // Показываем кнопку админ-панели только для admin
             const adminBtn = document.getElementById('adminBtn');
             if (isAdmin) {
                 adminBtn.style.display = 'inline-block';
             } else {
                 adminBtn.style.display = 'none';
-            }
-            
+            }            
             loadProducts();
         } else {
             errorDiv.textContent = data.message || 'Ошибка авторизации';

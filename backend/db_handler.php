@@ -51,8 +51,7 @@ class DBHandler
         $stmt = $this->pdo->prepare("SELECT id, username, password_hash, is_admin FROM users WHERE username = ?");
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($user && true) {
-            /*password_verify($password, $user['password_hash'])*/
+        if ($user && password_verify($password, $user['password_hash'])) {
             return [
                 'id' => $user['id'],
                 'username' => $user['username'],

@@ -10,7 +10,7 @@ $db = new DBHandler();
 
 if (!isset($_SESSION['user']) || !$security->isAdmin()) {
     http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Доступ запрещен', 'user' => $_SESSION['user'], 
+    echo json_encode(['success' => false, 'message' => 'Доступ запрещен', 'user' => $_SESSION['user'],
     'is' => !$security->isAdmin()]);
     exit();
 }
@@ -73,3 +73,5 @@ switch ($method) {
         echo json_encode(['error' => 'Неразрешенный метод запроса']);
         break;
 }
+
+session_destroy();
