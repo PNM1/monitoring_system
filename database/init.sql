@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS products (
@@ -18,7 +20,7 @@ CREATE TABLE IF NOT EXISTS products (
     quantity INT DEFAULT 1
 );
 
-INSERT INTO users (username, password_hash) VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+INSERT INTO users (username, password_hash, is_admin) VALUES ('admin', '$2y$10$Ztk6JKbO4j1XaNdnPRxYfuI51RSMT6jDbp7vopHk22Wdym1pDaq16', TRUE);
 
 INSERT INTO products (name, color, size, category, price, location_department, location_row, location_shelf, location_string, quantity) VALUES
 ('Пуховик зимний', 'Черный', 'XL', 'Куртки', 8990, 1, 1, 1, '1;1;1', 33),
