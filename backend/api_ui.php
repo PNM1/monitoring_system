@@ -44,6 +44,31 @@ switch ($method) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Требуется название товара']);
             }
+        } elseif ($path === '/sell') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (!$input && $_POST) {
+                $input = $_POST;
+            }
+
+            $required = ['product_name', 'color', 'size', 'quantity'];
+            $missing = array_diff($required, array_keys($input));
+            if (!empty($missing)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Отсутствуют поля: ' . implode(', ', $missing)]);
+                break;
+            }
+
+            $result = $queryModule->sellProduct(
+                $input['product_name'],
+                $input['color'],
+                $input['size'],
+                (int) $input['quantity']
+            );
+
+            if (!$result['success']) {
+                http_response_code(400);
+            }
+            echo json_encode($result, JSON_UNESCAPED_UNICODE);
         }
         break;
     case 'PUT':

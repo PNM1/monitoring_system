@@ -132,4 +132,30 @@ class QueryModule
         }
         fclose($handle);
     }
+
+    public function sellProduct($productName, $color, $size, $quantity)
+    {
+        $product = $this->db->getProductByNameColorSize($productName, $color, $size);
+        if (!$product) {
+            return ['success' => false, 'message' => 'Товар с такими параметрами не найден'];
+        }
+        if ($product['quantity'] < $quantity) {
+            return [
+                'success' => false,
+                'message' => 'Недостаточно товара в торговом зале',
+                'available' => $product['quantity'],
+                'requested' => $quantity
+            ];
+        }
+        $result = $this->db->decreaseProductQuantity($product['id'], $quantity);
+        if (!$result['success']) {
+            return $result;
+        }
+        return [
+            'success' => true,
+            'message' => 'Продажа выполнена успешно',
+            'product_id' => $product['id'],
+            'remaining_in_shop' => $result['new_quantity']
+        ];
+    }
 }
